@@ -1,12 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import './ProblemSolver.css';
 import axios from 'axios';
-
-// const API_URL = 'http://khj-1.xyz:8080';
-const API_URL = 'http://localhost:8080';
-
+import { CommonContext } from '../App';
 
 const ProblemSolver = (props) => {
+  const { baseUrl } = useContext(CommonContext);  
+
   const { questions, resetTrigger, onQuestionSubmit } = props;
   
   // localStorage에서 저장된 상태를 불러와 초기값으로 설정
@@ -77,7 +76,7 @@ const ProblemSolver = (props) => {
     setLoading(true);
 
     try {
-      const result = await axios.post(`${API_URL}/answer`, {
+      const result = await axios.post(`${baseUrl}/answer`, {
         Q: questions[currentQuestionIndex].questionContent,
         A: inputAnswer
       });
