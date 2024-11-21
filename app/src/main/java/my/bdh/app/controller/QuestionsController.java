@@ -17,8 +17,11 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
@@ -41,9 +44,6 @@ public class QuestionsController {
 
   private final QuestionsService questionsService;
   
-  // @Value("${openai.api.key}")
-  // private String openaiApiKey;
-
   @Value("${groq.api.key}")
   private String groqApiKey;
 
@@ -53,10 +53,10 @@ public class QuestionsController {
   @Value("${groq.api.base-url}")
   private String baseUrl;
 
-  private final RestTemplate restTemplate;
+  @Value("${allQuestions.pw}")
+  private String allQuestionsPw;
 
-  // private final ChatClient chatClient;
-  // private final OpenAiApi openAiApi;
+  private final RestTemplate restTemplate;
 
   private final OpenAiChatModel openAiChatModel;
 
@@ -182,12 +182,12 @@ public class QuestionsController {
   }
 
 
-  @PostMapping(value="questions", produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<?> questions(HttpServletRequest request) {
+  @PostMapping(value="questions/{typeNo}", produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<?> questions(@PathVariable("typeNo") int typeNo, HttpServletRequest request) {
 
     ServletContext application = request.getServletContext();
     
-    List<Question> questions = (List<Question>) application.getAttribute("questions");
+    List<Question> questions = (List<Question>) application.getAttribute("questions-" + typeNo);
 
     // List<String> questions = new ArrayList<>();
     // questions.add("Java에서 예외를 처리하기 위한 구문을 모두 설명하시오. ");
@@ -208,7 +208,7 @@ public class QuestionsController {
    * @param request
    * @return
    */
-  @PostMapping(value="typeQuestions", produces = MediaType.APPLICATION_JSON_VALUE)
+  @PostMapping(value="typeQuestions")
   public ResponseEntity<?> selectTypeQuestions(@RequestBody Question qqq, HttpServletRequest request) {
 
     int typeNo = qqq.getTypeNo();
@@ -216,12 +216,31 @@ public class QuestionsController {
     List<Question> questions = questionsService.selectTypeQuestions(typeNo);
 
     ServletContext application = request.getServletContext();
-    application.setAttribute("questions", questions);
-
+    application.setAttribute("questions-" + typeNo, questions);
 
     return ResponseEntity.ok("조회 완료");
   }
 
+  /**
+   * 모든 문제 DB에서 조회 후 Application에 저장
+   * @param request
+   * @return
+   */
+  @GetMapping(value="allQuestions")
+  public ResponseEntity<?> allQuestions(HttpServletRequest request, @RequestParam("pw") String pw) {
+
+    if (!pw.equals(allQuestionsPw)) {
+      return ResponseEntity.ok("실패");
+    }
+
+    ServletContext application = request.getServletContext();
+    for (int typeNo = 1; typeNo <= 9; typeNo++) {
+      List<Question> questions = questionsService.selectTypeQuestions(typeNo);
+      application.setAttribute("questions-" + typeNo, questions);
+    }
+
+    return ResponseEntity.ok("DB 조회 후 Application에 저장 완료");
+  }
 
 
 }
