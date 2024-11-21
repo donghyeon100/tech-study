@@ -21,7 +21,7 @@ function App() {
   const [selectedCategory, setSelectedCategory] = useState( () => {
       const urlSearchParams = new URLSearchParams(window.location.search);
       const typeNo = urlSearchParams.get('ct');
-      return typeNo ? parseInt(typeNo) : -1;
+      return typeNo ? parseInt(typeNo) : 0;
     }
   ); // 0은 전체 카테고리
 
@@ -36,17 +36,35 @@ function App() {
   //  히스토리 변경 시 로컬스토리지에 저장
   useEffect(() => {
     localStorage.setItem(`questionHistory-${selectedCategory}`, JSON.stringify(history)); 
-  }, [history]);
+  }, [history, selectedCategory]);
 
 
   // 서버에서 질문 목록 가져오는 함수
   const fetchQuestions = async (typeNo) => {
 
+
+    // // 전체 카테고리 선택 시
+    // if(typeNo === 0){
+      
+    //   // 로컬스토리지에 저장된 문제 모두 얻어와 하나의 배열로 만들기
+    //   let allQuestions = [];
+    //   for(let i = 1; i <= 9; i++){
+    //     const savedQuestions = JSON.parse(localStorage.getItem(`questions-${i}`));
+    //     if(savedQuestions){
+    //       allQuestions = [...allQuestions, ...savedQuestions];
+    //     }
+    //   }
+    //   setQuestions(allQuestions);
+
+    //   return;
+    // }
+
+
     setLoading(true);
     try {
       const response = await axios.post(`${baseUrl}/questions/${typeNo}`);  // 서버에서 질문 목록 가져오기
 
-      console.log(response.data);
+      // console.log(response.data);
       setQuestions(response.data);  // 질문 목록 상태 업데이트
 
       // 서버에서 읽어온 문제를 로컬스토리지에 저장
@@ -75,17 +93,22 @@ function App() {
 
   useEffect(() => {
     const loadQuestions = async () => {
+
+      // 카테고리 미선택 시
+      if(selectedCategory === 0){
+        return;
+      }
       const savedQuestions = JSON.parse(localStorage.getItem(`questions-${selectedCategory}`));
-      console.log(savedQuestions);
+      // console.log(savedQuestions);
       if (savedQuestions) {
         setQuestions(savedQuestions);  // 로컬스토리지에서 질문 불러오기
         return;
       }
-      await fetchQuestions();  // 로컬스토리지에 없으면 서버에서 질문 가져오기
+      await fetchQuestions(selectedCategory);  // 로컬스토리지에 없으면 서버에서 질문 가져오기
     };
 
     loadQuestions();
-  }, []);
+  }, [selectedCategory]);
 
   // useEffect(() => {
   //   console.log(questions);  // 질문 목록 상태 변경 시 콘솔에 출력

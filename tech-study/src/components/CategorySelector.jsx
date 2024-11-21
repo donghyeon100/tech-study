@@ -20,7 +20,7 @@ function CategorySelector({ selectedCategory, onCategoryChange }) {
     { id: 6, name: 'DB(Oracle)' },
     { id: 7, name: 'Spring' },
     { id: 8, name: 'MyBatis' },
-    { id: 9, name: '개발상식' }
+    { id: 9, name: '개발 관련 상식' }
   ];
 
   // 컴포넌트 마운트 시에만 실행되도록 수정
@@ -30,7 +30,7 @@ function CategorySelector({ selectedCategory, onCategoryChange }) {
     if (categoryParam && Number(categoryParam) !== selectedCategory) {
       onCategoryChange(Number(categoryParam));
     }
-  }, []); // 빈 의존성 배열로 변경
+  }, [selectedCategory, onCategoryChange]); // 빈 의존성 배열로 변경
 
   // 카테고리 변경 핸들러
   const handleCategoryChange = (categoryId) => {
@@ -41,11 +41,11 @@ function CategorySelector({ selectedCategory, onCategoryChange }) {
 
     // URL 쿼리 파라미터 업데이트
     const url = new URL(window.location.href);
-    if (categoryId === 0) {
-      url.searchParams.delete('ct');
-    } else {
+    // if (categoryId === 0) {
+      // url.searchParams.delete('ct');
+    // } else {
       url.searchParams.set('ct', categoryId);
-    }
+    // }
     window.history.pushState({}, '', url);
     
     // 카테고리 상태 업데이트
@@ -54,12 +54,12 @@ function CategorySelector({ selectedCategory, onCategoryChange }) {
 
   return (
     <div className="category-selector">
-      <button 
+      {/* <button 
         className={`category-button ${selectedCategory === 0 ? 'active' : ''}`}
         onClick={() => handleCategoryChange(0)}
       >
         전체
-      </button>
+      </button> */}
       {categories.map(category => (
         <button
           key={category.id}
