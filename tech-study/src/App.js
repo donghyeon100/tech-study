@@ -5,8 +5,8 @@ import ProblemSolver from './components/ProblemSolver';
 import HistoryList from './components/HistoryList';
 import HistoryModal from './components/HistoryModal';
 
-// const API_URL = 'http://khj-1.xyz:8080';
-const API_URL = 'http://localhost:8080';
+const API_URL = 'http://khj-1.xyz:8080';
+// const API_URL = 'http://localhost:8080';
 
 function App() {
   const [questions, setQuestions] = useState([]);
@@ -85,6 +85,8 @@ function App() {
 
   return (
     <div className="App">
+      <div className="tooltip">문제 안보이면 오른쪽 초기화 버튼 클릭해보세요!</div>
+
       <button 
         className="reset-button"
         onClick={handleReset}

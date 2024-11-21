@@ -16,6 +16,15 @@
   }
 }
 
+.tooltip{
+  position: absolute;
+  top: 1rem;
+  right: 10rem;
+  font-size: 0.8rem;
+  color: #aaa;
+  font-weight: 600;
+}
+
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
