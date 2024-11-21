@@ -8,7 +8,6 @@ function HistoryModal({ item, onClose }) {
       <div className="modal-content" onClick={e => e.stopPropagation()}>
         <h3>{item.question}</h3>
         <div className="modal-body">
-          {/* <p className="modal-question">{item.question}</p> */}
           <hr />
           <div>
             <h4>제출한 답안</h4>
