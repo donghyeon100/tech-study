@@ -159,10 +159,16 @@ public class QuestionsController {
     log.info("sb: {}", sb.toString());
 
 
+    StringBuilder sb2 = new StringBuilder();
+    sb2.append("신입 자바 웹 개발자가 되려는 사람을 돕기위한 멘토 역할을 맡아줘. ");
+    sb2.append("문제에 대한 핵심 키워드가 포함된 적당한 길이의 답변을 해줘. ");
+    sb2.append("응답은 항상 {answer : 답변, judgement : 평가, reason : 이유} 형태의 JSON으로 응답해줘");
+
     ChatResponse  response =
     ChatClient
         .builder(openAiChatModel)
-        .defaultSystem("너는 신입 자바 웹 개발자를 뽑기 위한 면접관이야, 문제에 대한 핵심 키워드가 포함된 적당한 길이의 답변을 응답하고 답변의 유사도를 평가하는 면접관이야")
+        // .defaultSystem("너는 신입 자바 웹 개발자를 뽑기 위한 면접관이야, 문제에 대한 핵심 키워드가 포함된 적당한 길이의 답변을 응답하고 답변의 유사도를 평가하는 면접관이야")
+        .defaultSystem(sb2.toString())
         .defaultUser(sb.toString())
         .build()
         .prompt()
