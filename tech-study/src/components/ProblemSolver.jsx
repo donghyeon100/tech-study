@@ -67,8 +67,9 @@ const ProblemSolver = (props) => {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const categoryParam = params.get('ct');
+    // console.log(categoryParam, questions)
 
-    if (categoryParam && judgement !== null && explanation !== '' && reason !== '') {
+    if (categoryParam && questions.length > 0 && judgement !== null && explanation !== '' && reason !== '') {
       onQuestionSubmit({
         question: questions[currentQuestionIndex].questionContent,
         userAnswer: inputAnswer,
