@@ -49,7 +49,7 @@ const ProblemSolver = (props) => {
     localStorage.setItem(`judgement-${selectedCategory}`, judgement);
     localStorage.setItem(`explanation-${selectedCategory}`, explanation);
     localStorage.setItem(`reason-${selectedCategory}`, reason);
-  }, [currentQuestionIndex, showSolution, inputAnswer, judgement, explanation, reason]);
+  }, [currentQuestionIndex, showSolution, inputAnswer, judgement, explanation, reason, selectedCategory]);
 
   // resetTrigger가 변경될 때마다 첫 번째 문제로 초기화
   useEffect(() => {

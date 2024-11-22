@@ -33,6 +33,37 @@ function App() {
   });  
 
 
+  // 페이지 접속 시 localStorage 초기화 검사
+  useEffect(() => {
+    function checkDuplicateHistory(historyArray){
+      const key = 'question';
+      let currentCount = 1;
+      for (let i = 1; i < historyArray.length; i++) {
+        if (historyArray[i][key] === historyArray[i - 1][key]) {
+          currentCount++;
+          if (currentCount >= 5) {
+            localStorage.removeItem(`questionHistory-${i}`);
+            console.log('LocalStorage 초기화 완료: 중복 항목 수가 5개를 초과했습니다.');
+            return;
+          }
+        } else {
+          currentCount = 1;
+        }
+      }
+    }
+
+
+    for (let i = 1; i <= 9; i++) {
+      const savedHistory = localStorage.getItem(`questionHistory-${i}`);
+      if (!savedHistory)  continue;
+
+      const historyArray = JSON.parse(savedHistory);
+
+      checkDuplicateHistory(historyArray);
+    }
+  }, []);
+
+
   //  히스토리 변경 시 로컬스토리지에 저장
   useEffect(() => {
     localStorage.setItem(`questionHistory-${selectedCategory}`, JSON.stringify(history)); 
@@ -41,24 +72,6 @@ function App() {
 
   // 서버에서 질문 목록 가져오는 함수
   const fetchQuestions = async (typeNo) => {
-
-
-    // // 전체 카테고리 선택 시
-    // if(typeNo === 0){
-      
-    //   // 로컬스토리지에 저장된 문제 모두 얻어와 하나의 배열로 만들기
-    //   let allQuestions = [];
-    //   for(let i = 1; i <= 9; i++){
-    //     const savedQuestions = JSON.parse(localStorage.getItem(`questions-${i}`));
-    //     if(savedQuestions){
-    //       allQuestions = [...allQuestions, ...savedQuestions];
-    //     }
-    //   }
-    //   setQuestions(allQuestions);
-
-    //   return;
-    // }
-
 
     setLoading(true);
     try {
