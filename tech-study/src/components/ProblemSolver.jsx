@@ -49,7 +49,8 @@ const ProblemSolver = (props) => {
     localStorage.setItem(`judgement-${selectedCategory}`, judgement);
     localStorage.setItem(`explanation-${selectedCategory}`, explanation);
     localStorage.setItem(`reason-${selectedCategory}`, reason);
-  }, [currentQuestionIndex, showSolution, inputAnswer, judgement, explanation, reason, selectedCategory]);
+  }, [currentQuestionIndex, showSolution, inputAnswer, judgement, explanation, reason]);
+  // }, [selectedCategory]);
 
   // resetTrigger가 변경될 때마다 첫 번째 문제로 초기화
   useEffect(() => {
@@ -63,24 +64,14 @@ const ProblemSolver = (props) => {
     }
   }, [resetTrigger]);
 
-  // 상태가 변경될 때마다 onQuestionSubmit 호출
   useEffect(() => {
-    // const params = new URLSearchParams(window.location.search);
-    // const categoryParam = params.get('ct');
-    // console.log(categoryParam, questions)
-    console.log(selectedCategory, questions.length, judgement, explanation, reason);
 
-    if (selectedCategory != 0 && questions.length > 0 && judgement !== null && explanation !== '' && reason !== '') {
-      onQuestionSubmit({
-        question: questions[currentQuestionIndex].questionContent,
-        userAnswer: inputAnswer,
-        isCorrect: judgement,
-        explanation: explanation,
-        reason: reason
-      });
-    }
-  }, [selectedCategory,judgement, explanation, reason]); // 상태가 변경될 때마다 실행
+    setInputAnswer(localStorage.getItem(`inputAnswer-${selectedCategory}`));
+    setJudgement(localStorage.getItem(`judgement-${selectedCategory}`));
+    setExplanation(localStorage.getItem(`explanation-${selectedCategory}`));
+    setReason(localStorage.getItem(`reason-${selectedCategory}`));
 
+  }, [selectedCategory]);
   /**
    * 답안 제출 버튼 클릭 이벤트
    */
@@ -115,13 +106,6 @@ const ProblemSolver = (props) => {
     } finally {
       setLoading(false);
       
-      // onQuestionSubmit({
-      //   question: questions[currentQuestionIndex].questionContent,  // 현재 질문의 내용
-      //   userAnswer: inputAnswer,  // 사용자가 입력한 답안
-      //   isCorrect: judgement,  // 판단 결과
-      //   explanation: explanation,  // 해설
-      //   reason: reason  // 이유
-      // });
     }
   };
 
@@ -137,13 +121,13 @@ const ProblemSolver = (props) => {
     setExplanation('');
     setReason('');
 
-    // onQuestionSubmit({
-    //   question: questions[currentQuestionIndex].questionContent,  // 현재 질문의 내용
-    //   userAnswer: inputAnswer,  // 사용자가 입력한 답안
-    //   isCorrect: judgement,  // 판단 결과
-    //   explanation: explanation,  // 해설
-    //   reason: reason  // 이유
-    // });
+    onQuestionSubmit({
+      question: questions[currentQuestionIndex].questionContent,  // 현재 질문의 내용
+      userAnswer: inputAnswer,  // 사용자가 입력한 답안
+      isCorrect: judgement,  // 판단 결과
+      explanation: explanation,  // 해설
+      reason: reason  // 이유
+    });
   };
 
   return (

@@ -54,12 +54,6 @@ function CategorySelector({ selectedCategory, onCategoryChange }) {
 
   return (
     <div className="category-selector">
-      {/* <button 
-        className={`category-button ${selectedCategory === 0 ? 'active' : ''}`}
-        onClick={() => handleCategoryChange(0)}
-      >
-        전체
-      </button> */}
       {categories.map(category => (
         <button
           key={category.id}

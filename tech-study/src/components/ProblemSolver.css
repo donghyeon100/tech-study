@@ -157,3 +157,12 @@
 .answer-incorrect {
   color: #e3342f; /* 오답일 때 색상 */
 }
+
+
+/* 모바일 환경 대응을 위한 미디어 쿼리 추가 */
+@media screen and (max-width: 768px) {
+  .problem-container{
+    margin: auto;
+    width: 90%;
+  }
+}
