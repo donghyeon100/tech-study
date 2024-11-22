@@ -140,7 +140,7 @@ public class QuestionsController {
 
     sb.append("- 신입 개발자 기술 면접 서술형 문제 Q와 면접자의 답변 A임\n");
     sb.append("- 문제 Q에 대한 답변을 작성하고 A에 작성된 답변과 비교하는 것이 목적\n");
-    sb.append("- answer : GPT가 제시하는 문제 답변\n");
+    sb.append("- answer : GPT가 제시하는 문제 답변(모두 하나의 문자열로 표기)\n");
     sb.append("- judgement : A에 작성된 답변이 answer를 유추할 수 있으면 0, 보충이 필요하면 1, 정답이 아닌 것 같으면 2\n");
     sb.append("- 단, A에 작성된 답변의 길이가 많이 짧거나, 단순 키워드만 작성되어 있으면 1 또는 2로 판별하기");
     sb.append("- reason : judgement 판별한 이유(A 언급 시 '작성한 답변' 으로 표기 \n");
