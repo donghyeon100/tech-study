@@ -65,11 +65,12 @@ const ProblemSolver = (props) => {
 
   // 상태가 변경될 때마다 onQuestionSubmit 호출
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const categoryParam = params.get('ct');
+    // const params = new URLSearchParams(window.location.search);
+    // const categoryParam = params.get('ct');
     // console.log(categoryParam, questions)
+    console.log(selectedCategory, questions.length, judgement, explanation, reason);
 
-    if (categoryParam && questions.length > 0 && judgement !== null && explanation !== '' && reason !== '') {
+    if (selectedCategory != 0 && questions.length > 0 && judgement !== null && explanation !== '' && reason !== '') {
       onQuestionSubmit({
         question: questions[currentQuestionIndex].questionContent,
         userAnswer: inputAnswer,
@@ -78,7 +79,7 @@ const ProblemSolver = (props) => {
         reason: reason
       });
     }
-  }, [judgement, explanation, reason]); // 상태가 변경될 때마다 실행
+  }, [selectedCategory,judgement, explanation, reason]); // 상태가 변경될 때마다 실행
 
   /**
    * 답안 제출 버튼 클릭 이벤트
