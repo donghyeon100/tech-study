@@ -65,7 +65,10 @@ const ProblemSolver = (props) => {
 
   // 상태가 변경될 때마다 onQuestionSubmit 호출
   useEffect(() => {
-    if (judgement !== null && explanation !== '' && reason !== '') {
+    const params = new URLSearchParams(window.location.search);
+    const categoryParam = params.get('ct');
+
+    if (categoryParam && judgement !== null && explanation !== '' && reason !== '') {
       onQuestionSubmit({
         question: questions[currentQuestionIndex].questionContent,
         userAnswer: inputAnswer,
